@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import s from './planetGarbage.module.scss';
 import {getPlanetGarbage} from "../../api/api";
 
-const PlanetGarbage = ({data}) => {
+const PlanetGarbage = ({data, currPlanet}) => {
     const [figures, setFigures] = useState([]);
     useEffect(() => {
         setFigures(getPlanetGarbage(data));
@@ -11,7 +11,7 @@ const PlanetGarbage = ({data}) => {
     return(
         <div className={s.contentOuter}>
             <p className={s.info}>
-                 Мусор планеты:
+                 Мусор планеты: {currPlanet}
             </p>
             <div className={s.content}>
                 {

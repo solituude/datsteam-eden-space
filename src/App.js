@@ -14,6 +14,7 @@ function App() {
     // const [dataShip, setDataShip] = useState({});
     const [dataShipGarbage, setDataShipGarbage] = useState([]);
     const [garbagePlanet, setGarbagePlanet] = useState({});
+    const [currPlanet, setCurrPlanet] = useState("");
 
     const handleUpdate = (e) => {
         e.preventDefault();
@@ -25,6 +26,7 @@ function App() {
             setDataUniverse(res.universe);
             setGarbagePlanet(res.ship.planet.garbage);
             setDataShipGarbage(getGarbageShip(res.ship.capacityY, res.ship.capacityX, res.ship.garbage));
+            setCurrPlanet(res.ship.planet.name);
             console.log(res);
             // setDataShip(res.ship);
         });
@@ -46,7 +48,7 @@ function App() {
                 </div>
 
                 <div className="container">
-                    <PlanetGarbage data={garbagePlanet}/>
+                    <PlanetGarbage data={garbagePlanet} currPlanet={currPlanet}/>
                 </div>
             </div>
 

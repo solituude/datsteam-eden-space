@@ -94,7 +94,7 @@ export const getPlanetGarbage = (objGarbage) => {
             }
             arr.push(row);
         }
-        let r = Math.floor(Math.random() * 20 - 1);
+        let r = Math.floor(Math.random() * 19 + 1);
         console.log(maxY, maxX, currFigure);
         for (let i = 0; i < currFigure.length; i++) {
             arr[currFigure[i][0]][currFigure[i][1]] = 'rgb(' + red[r] + ')';
