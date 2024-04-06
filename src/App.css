@@ -61,3 +61,7 @@
 table, tr, td, thead {
   border: 1px solid black;
 }
+
+body {
+  scrollbar-width: none;
+}

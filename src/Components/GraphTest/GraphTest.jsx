@@ -1,52 +1,4 @@
-//
-// import React, {useEffect, useState} from 'react';
-// import { Graph } from 'react-d3-graph';
-// import {getValidateDataForGraph} from "../../api/api";
-//
-//
-// const MyGraph = ({universeData}) => {
-//     const [data, setData] = useState({});
-//     useEffect(() => {
-//         setData(getValidateDataForGraph(universeData));
-//     }, [universeData])
-//
-//     const myConfig = {
-//         directed: true,
-//
-//         node: {
-//             fontColor: 'red',
-//             fontSize: "9px"
-//         },
-//         link: {
-//             labelProperty: 'weight',
-//             fontColor: "#ffffff",
-//             renderLabel: true,
-//         },
-//         d3: {
-//             gravity: -400,
-//             linkLength: 100,
-//             zoom: {
-//                 enable: true,
-//                 scaleExtent: [0.5, 2],
-//                 onZoomStart: false,
-//                 onZoomEnd: false
-//             },
-//         },
-//         invalidation: true,
-//         width: 800,
-//         height: window.innerHeight - 40,
-//     };
-//
-//     return (
-//         <Graph
-//             id="graph-id"
-//             config={myConfig}
-//             data={data}
-//         />
-//     );
-// };
-//
-// export default MyGraph;
+
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { getValidateDataForGraph } from "../../api/api";
@@ -55,6 +7,7 @@ const MyGraph = ({ universeData }) => {
     const ref = useRef();
 
     useEffect(() => {
+        d3.select(ref.current).selectAll("*").remove();
         const data = getValidateDataForGraph(universeData);
         const svg = d3.select(ref.current)
             .attr("viewBox", [-800 / 2, -window.innerHeight / 2, 800, window.innerHeight]);
@@ -67,8 +20,20 @@ const MyGraph = ({ universeData }) => {
                 g.attr("transform", event.transform);
             })
         );
+        svg.append("defs").selectAll("marker")
+            .data(["end"])      // Different link/path types can be defined here
+            .enter().append("marker")    // This section adds in the arrows
+            .attr("id", String)
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 15)
+            .attr("refY", -1.5)
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", "M0,-5L10,0L0,5");
 
-        const width = 800;
+        const width = window.innerWidth * 0.4;
         const height = window.innerHeight - 40;
 
         // Create force simulation
@@ -84,7 +49,8 @@ const MyGraph = ({ universeData }) => {
             .join("line")
             .attr("stroke", "#999")
             .attr("stroke-opacity", 0.6)
-            .attr("stroke-width", d => Math.sqrt(d.value));
+            .attr("stroke-width", d => Math.sqrt(d.value))
+            .attr("marker-end", "url(#end)");
 
         // Create nodes
         const node = svg.append("g")
@@ -137,14 +103,13 @@ const MyGraph = ({ universeData }) => {
                 event.subject.fy = null;
             }
 
-            return d3.drag()
-                .on("start", dragstarted)
+            return d3.drag().on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended);
         }
     }, [universeData]);
 
-    return <svg ref={ref} width={800} height={window.innerHeight - 40} />;
+    return <svg ref={ref} width={window.innerWidth * 0.4} height={window.innerHeight - 40} />;
 };
 
 export default MyGraph;
