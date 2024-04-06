@@ -11,7 +11,7 @@ const red = [
 
 
 export const getUniverse = async () => {
-    let response = await fetch('/player/universe', {
+    let response = await fetch('https://datsedenspace.datsteam.dev/player/universe', {
         method: 'GET',
         headers: header,
     });
@@ -20,7 +20,7 @@ export const getUniverse = async () => {
 }
 
 export const getRound = async () => {
-    let response = await fetch('/player/rounds', {
+    let response = await fetch('https://datsedenspace.datsteam.dev/player/rounds', {
         method: 'GET',
         headers: header,
     });
